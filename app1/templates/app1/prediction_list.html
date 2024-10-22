@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">X</th>
+                        <th scope="col">Y</th>
+                        <th scope="col">Z Experimental</th>
+                        <th scope="col">Z Predicted</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prediction in predictions %}
+                    <tr>
+                        <td>{{ prediction.id }}</td>
+                        <td>{{ prediction.x }}</td>
+                        <td>{{ prediction.y }}</td>
+                        <td>{{ prediction.z_exp }}</td>
+                        <td>{{ prediction.z_pred }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#myModal" onclick="setModalContent({{ prediction|safe }})">
+                                Open Modal
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">X</th>
+                            <th scope="col">Y</th>
+                            <th scope="col">Z Experimental</th>
+                            <th scope="col">Z Predicted</th>
+                            <!-- <th scope="col">Image</th> -->
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr id="table-row-data">
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function setModalContent(prediction) {
+        let tableRowData = document.getElementById('table-row-data');
+
+        // Clear previous data
+        tableRowData.innerHTML = '';
+
+        // Create table cells and set their text content
+        let tdId = document.createElement("td");
+        tdId.innerText = prediction.id;
+
+        let tdX = document.createElement("td");
+        tdX.innerText = prediction.x;
+
+        let tdY = document.createElement("td");
+        tdY.innerText = prediction.y;
+
+        let tdZExp = document.createElement("td");
+        tdZExp.innerText = prediction.z_exp;
+
+        let tdZPred = document.createElement("td");
+        tdZPred.innerText = prediction.z_pred;
+
+        // Append the cells to the table row
+        tableRowData.appendChild(tdId);
+        tableRowData.appendChild(tdX);
+        tableRowData.appendChild(tdY);
+        tableRowData.appendChild(tdZExp);
+        tableRowData.appendChild(tdZPred);
+    }
+</script>
+
+{% endblock %}
